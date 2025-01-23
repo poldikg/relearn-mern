@@ -7,6 +7,7 @@ const WorkoutForm = () => {
     const [load, setLoad] = useState("");
     const [reps, setReps] = useState("");
     const [error, setError] = useState("")
+    const [emptyFields, setEmptyFields] = useState([])
     const { dispatch } = useWorkoutsContext();
     console.log(title)
 
@@ -27,6 +28,7 @@ const WorkoutForm = () => {
 
         if (response.ok) {
             setError(null)
+            setEmptyFields([])
             setTitle("")
             setLoad("")
             setReps("")
@@ -34,6 +36,7 @@ const WorkoutForm = () => {
         }
         else if (!response.ok) {
             setError(json.error)
+            setEmptyFields(json.emptyFields)
         }
     }
 
@@ -42,11 +45,17 @@ const WorkoutForm = () => {
             <h3>Add a new workout!</h3>
 
             <label htmlFor="title">Exercise Title:</label>
-            <input type="text" name="title" id="title" value={title} onChange={(e) => setTitle(e.target.value)} />
+            <input type="text"
+                name="title"
+                id="title"
+                value={title}
+                className={emptyFields.includes("title") ? "error" : ""}
+                onChange={(e) => setTitle(e.target.value)} />
+
             <label htmlFor="title">Load:</label>
-            <input type="number" name="load" id="load" value={load} onChange={(e) => setLoad(e.target.value)} />
+            <input type="number" name="load" id="load" value={load} className={emptyFields.includes("load") ? "error" : ""} onChange={(e) => setLoad(e.target.value)} />
             <label htmlFor="title">Reps</label>
-            <input type="number" name="reps" id="reps" value={reps} onChange={(e) => setReps(e.target.value)} />
+            <input type="number" name="reps" id="reps" value={reps} className={emptyFields.includes("reps") ? "error" : ""} onChange={(e) => setReps(e.target.value)} />
 
             <button>Add Workout</button>
             {error && <div className="error">{error}</div>}
