@@ -19,7 +19,7 @@ app.use((req, res, next) => {
 
 //routes
 app.use("/api/workouts", router);
-app.use("/api/user", userRouter)
+app.use("/api/user", userRouter);
 
 //Connect to DB
 mongoose.connect(process.env.MONGO_URI)
